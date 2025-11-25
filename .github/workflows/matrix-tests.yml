@@ -10,12 +10,25 @@ jobs:
   test:
     name: Test on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    # allow experimental jobs to fail without failing the whole workflow
+    continue-on-error: ${{ matrix.experimental == true }}
 
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.9', '3.11', '3.12']
+
+        # exclude one combination
+        exclude:
+          - os: macos-latest
+            python-version: '3.9'
+
+        # add an extra experimental combo
+        include:
+          - os: ubuntu-latest
+            python-version: '3.13-dev'
+            experimental: true
 
     steps:
       - name: Checkout code

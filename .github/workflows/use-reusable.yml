@@ -12,20 +12,20 @@ jobs:
     uses: ./.github/workflows/reusable-test.yml
     secrets:
       API_KEY: ${{ secrets.API_KEY }}
-
+  
   # Call the reusable workflow with custom settings
   test-custom:
     uses: ./.github/workflows/reusable-test.yml
     with:
-      python-version: "3.12"
-      test-command: "pytest -v --maxfail=1"
+      python-version: '3.12'
+      test-command: 'pytest -v --cov'
     secrets:
       API_KEY: ${{ secrets.API_KEY }}
-
-  # Use output provided by reusable workflow
+  
+  # Use the output from reusable workflow
   report:
     needs: test-default
     runs-on: ubuntu-latest
     steps:
-      - name: Show test result
-        run: echo "Result: ${{ needs.test-default.outputs.test-result }}"
+      - name: Display test result
+        run: echo "Test result was ${{ needs.test-default.outputs.test-result }}"

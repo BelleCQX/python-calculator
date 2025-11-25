@@ -1,7 +1,6 @@
 import os
 
 # Read DEBUG flag from environment variables
-# DEBUG_MODE=true will enable the prints
 DEBUG = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 
 def add(a, b):

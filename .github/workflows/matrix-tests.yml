@@ -10,7 +10,6 @@ jobs:
   test:
     name: Test on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
-    # allow experimental jobs to fail without failing the whole workflow
     continue-on-error: ${{ matrix.experimental == true }}
 
     strategy:
@@ -19,12 +18,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.9', '3.11', '3.12']
 
-        # exclude one combination
         exclude:
           - os: macos-latest
             python-version: '3.9'
 
-        # add an extra experimental combo
         include:
           - os: ubuntu-latest
             python-version: '3.13-dev'
@@ -52,5 +49,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug information
+        if: runner.debug == '1'
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Python version: ${{ matrix.python-version }}"
+          env
+
       - name: Run pytest
-        run: pytest -v
+        run: pytest -vv -s

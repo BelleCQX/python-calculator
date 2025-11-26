@@ -83,8 +83,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug information
+        if: runner.debug == '1'
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Python version: 3.11"
+          env
+
       - name: Run tests with coverage
-        run: pytest -v --cov=calculator --cov-report=term-missing
+        run: pytest -vv -s --cov=calculator --cov-report=term-missing
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -152,5 +159,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug information
+        if: runner.debug == '1'
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Scenario: ${{ matrix.scenario.name }}"
+          env
+
       - name: Run ${{ matrix.scenario.name }} tests
-        run: pytest -v -m "${{ matrix.scenario.marker }}"
+        run: pytest -vv -s -m "${{ matrix.scenario.marker }}"

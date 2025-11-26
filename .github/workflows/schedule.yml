@@ -1,0 +1,12 @@
+name: Scheduled Example
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"  # every Monday at 2 AM UTC
+
+jobs:
+  weekly-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Weekly message
+        run: echo "Weekly workflow ran"

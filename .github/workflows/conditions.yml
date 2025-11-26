@@ -1,0 +1,22 @@
+name: Conditional Steps Example
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  conditions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run on main branch only
+        if: github.ref == 'refs/heads/main'
+        run: echo "This runs on main branch"
+
+      - name: Run on pull request only
+        if: github.event_name == 'pull_request'
+        run: echo "This runs on PR events"
+
+      - name: Always run
+        if: always()
+        run: echo "This always runs"

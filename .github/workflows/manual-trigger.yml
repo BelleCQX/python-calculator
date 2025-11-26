@@ -1,0 +1,16 @@
+name: Manual Trigger Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Enter a message"
+        required: true
+        type: string
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print message
+        run: echo "Message: ${{ inputs.message }}"

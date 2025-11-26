@@ -1,0 +1,27 @@
+name: Dynamic Matrix Example
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Create matrix JSON
+        id: set-matrix
+        run: echo 'matrix={"python-version":["3.9","3.11","3.12"]}' >> $GITHUB_OUTPUT
+
+  test:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run python version
+        run: echo "Testing Python ${{ matrix.python-version }}"
